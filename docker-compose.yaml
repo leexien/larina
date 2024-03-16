@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  frontend:
+    image: larina/front:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - database
+    networks:
+      - larina_network
+
+  backend:
+    image: larina/back:latest
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+    networks:
+      - larina_network
+
+  database:
+    image: mysql:latest
+    volumes:
+      - larina_db_data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: larina_db
+      MYSQL_USER: larina_user
+      MYSQL_PASSWORD: larina_password
+    networks:
+      - larina_network
+
+networks:
+  larina_network:
+    driver: bridge
+
+volumes:
+  larina_db_data:
+
